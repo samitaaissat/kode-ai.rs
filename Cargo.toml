@@ -1,0 +1,32 @@
+[package]
+name = "kode-ai-rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rmcp = { version = "0.1.5", features = ["server", "transport-io"] }
+octocrab = "0.44.1"
+tokio = { version = "1", features = ["macros", "rt", "rt-multi-thread", "io-std", "signal", "process"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+anyhow = "1.0"
+tracing = "0.1"
+pulldown-cmark = "0.13.0"
+regex = "1.11.1"
+walkdir = "2.5.0"
+clap = { version = "4.5.40", features = ["derive"] }
+
+tracing-subscriber = { version = "0.3.19", features = [
+    "env-filter",
+    "std",
+    "fmt",
+], optional = true }
+
+tempfile = "3.20.0"
+base64 = "0.22.1"
+reqwest = "0.12.20"
+zip = "4.1.0"
+
+[features]
+trace = ["dep:tracing-subscriber"]
+default = ["trace"]
