@@ -158,6 +158,19 @@ impl Documents {
 #[tool(tool_box)]
 impl ServerHandler for Documents {
     fn get_info(&self) -> ServerInfo {
+        let instructions: &str = "This server provides tools to access documentation from a GitHub repository. \
+        In this server, you can access documentation stored in a document storage system. \
+        The document storage contains documentation, best practices, insights and how to guides. \
+        It can help you find relevant information based on your queries. \
+        It should be used to retrieve best pactices, insights, and more, when a question is asked. \
+        \n\n\
+        By using these best practices, you can improve the quality of your code, \
+        and act as a teacher, not merely producing code for the user. But also, \
+        teaching them how to write better code. \
+        \n\n\
+        Available tools include:\n\
+        'get_all_docs' to retrieve all available documents, 'get_document' to fetch a specific document by path, or 'find_relevant_docs' to search for documents relevant to a query.";
+        
         ServerInfo {
             protocol_version: ProtocolVersion::V_2024_11_05,
             capabilities: ServerCapabilities::builder()
@@ -166,7 +179,7 @@ impl ServerHandler for Documents {
                 .enable_tools()
                 .build(),
             server_info: Implementation::from_build_env(),
-            instructions: Some("This server provides tools to access documentation from a GitHub repository. Use 'get_all_docs' to retrieve all available documents, 'get_document' to fetch a specific document by path, or 'find_relevant_docs' to search for documents relevant to a query.".to_string()),
+            instructions: Some(instructions.to_string()),
         }
     }
 

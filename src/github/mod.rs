@@ -1,11 +1,8 @@
 use anyhow::Result;
 use octocrab::Octocrab;
-use std::path::Path;
 use base64::{engine::general_purpose::STANDARD, Engine as _};
-use tempfile::TempDir;
 use crate::document::Document;
 use std::collections::HashMap;
-use std::error::Error;
 use std::sync::Arc;
 use tokio::sync::{RwLock, Semaphore};
 use tokio::time::{sleep, Duration};
