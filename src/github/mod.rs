@@ -6,7 +6,6 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::{RwLock, Semaphore};
 use tokio::time::{sleep, Duration};
-use std::sync::atomic::{AtomicUsize, Ordering};
 
 /// GitHub repository connector that handles authentication and repository operations
 #[derive(Clone)]
@@ -18,8 +17,6 @@ pub struct GitHubConnector {
     file_cache: Arc<RwLock<HashMap<String, String>>>,
     // Semaphore to limit concurrent requests to GitHub API
     request_semaphore: Arc<Semaphore>,
-    // Counter for API requests to track rate limiting
-    request_count: Arc<AtomicUsize>,
     // Maximum number of concurrent requests
     max_concurrent_requests: usize,
 }
@@ -56,7 +53,6 @@ impl GitHubConnector {
             repo: repo.to_string(),
             file_cache: Arc::new(RwLock::new(HashMap::new())),
             request_semaphore: Arc::new(Semaphore::new(max_concurrent_requests)),
-            request_count: Arc::new(AtomicUsize::new(0)),
             max_concurrent_requests,
         })
     }
@@ -73,9 +69,6 @@ impl GitHubConnector {
 
         // Acquire a permit from the semaphore to limit concurrent requests
         let _permit = self.request_semaphore.clone().acquire_owned().await?;
-
-        // Increment the request counter
-        let request_number = self.request_count.fetch_add(1, Ordering::SeqCst);
 
         // Implement retry logic with exponential backoff
         let max_retries = 3;

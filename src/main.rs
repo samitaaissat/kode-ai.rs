@@ -46,6 +46,7 @@ async fn main() -> Result<()> {
 
     // Document storage initialization in temporary directory
     let temp_dir = tempfile::tempdir()?;
+    tracing::info!("Using temporary directory for document storage: {:?}", temp_dir.path());
     let mut store = DocumentStorage::new(temp_dir.path())?;
     tracing::info!("Document storage initialized at: {:?}", temp_dir.path());
 
